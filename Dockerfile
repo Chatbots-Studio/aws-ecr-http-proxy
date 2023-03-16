@@ -1,13 +1,16 @@
-FROM openresty/openresty:1.19.9.1-12-alpine
+FROM openresty/openresty:1.21.4.1-jammy
 
 USER root
 
-RUN apk add -v --no-cache bind-tools python3 py-pip py3-urllib3 py3-colorama supervisor \
+RUN apt update && \
+ apt install supervisor -y \
  && mkdir /cache \
- && addgroup -g 110 nginx \
- && adduser -u 110  -D -S -h /cache -s /sbin/nologin -G nginx nginx \
- && pip install --upgrade pip awscli==1.11.183 \
- && apk -v --purge del py-pip
+ && groupadd -g 110 nginx \
+ && useradd -u 110 -M -d /cache -s /sbin/nologin -g nginx nginx \
+ && curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
+ && unzip awscliv2.zip \
+ && ./aws/install \
+ && rm -rf aws awscliv2.zip
 
 COPY files/startup.sh files/renew_token.sh files/health-check.sh  /
 COPY files/ecr.ini /etc/supervisor.d/ecr.ini

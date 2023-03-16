@@ -39,6 +39,9 @@ echo Using cache max size $CACHE_MAX_SIZE
 CACHE_KEY=${CACHE_KEY:='$uri'}
 echo Using cache key $CACHE_KEY
 
+CACHE_INACTIVE_TIME=${CACHE_INACTIVE_TIME=:-1y}
+echo Using cache max size $CACHE_MAX_SIZE
+
 SCHEME=http
 CONFIG=/usr/local/openresty/nginx/conf/nginx.conf
 SSL_CONFIG=/usr/local/openresty/nginx/conf/ssl.conf
@@ -60,6 +63,7 @@ sed -i -e s!CACHE_KEY!"$CACHE_KEY"!g $CONFIG
 sed -i -e s!SCHEME!"$SCHEME"!g $CONFIG
 sed -i -e s!SSL_INCLUDE!"$SSL_INCLUDE"!g $CONFIG
 sed -i -e s!SSL_LISTEN!"$SSL_LISTEN"!g $CONFIG
+sed -i -e s!CACHE_INACTIVE_TIME!"$CACHE_INACTIVE_TIME"!g $CONFIG
 
 # Update health-check
 sed -i -e s!PORT!"$PORT"!g /health-check.sh
@@ -79,7 +83,7 @@ chmod 600 -R ${AWS_FOLDER}
 
 # add the auth token in default.conf
 AUTH=$(grep  X-Forwarded-User $CONFIG | awk '{print $4}'| uniq|tr -d "\n\r")
-TOKEN=$(aws ecr get-login --no-include-email | awk '{print $6}')
+TOKEN=$(aws ecr get-login-password)
 AUTH_N=$(echo AWS:${TOKEN}  | base64 |tr -d "[:space:]")
 sed -i "s|${AUTH%??}|${AUTH_N}|g" $CONFIG
 
