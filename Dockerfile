@@ -25,4 +25,4 @@ RUN chmod a+x /startup.sh /renew_token.sh
 HEALTHCHECK --interval=5s --timeout=5s --retries=3 CMD /health-check.sh
 
 ENTRYPOINT ["/startup.sh"]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord"]
