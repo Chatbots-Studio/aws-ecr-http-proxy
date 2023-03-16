@@ -39,7 +39,7 @@ echo Using cache max size $CACHE_MAX_SIZE
 CACHE_KEY=${CACHE_KEY:='$uri'}
 echo Using cache key $CACHE_KEY
 
-CACHE_INACTIVE_TIME=${CACHE_INACTIVE_TIME=:-1y}
+CACHE_INACTIVE_TIME=${CACHE_INACTIVE_TIME:-1y}
 echo Using cache max size $CACHE_MAX_SIZE
 
 SCHEME=http

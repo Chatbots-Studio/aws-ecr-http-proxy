@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  proxy:
+    #image: ghcr.io/chatbots-studio/aws-ecr-http-proxy:latest
+    build:
+      context: .
+    platform: linux/amd64
+    ports:
+      - 5001:5000
+    env_file:
+      - proxy.env
