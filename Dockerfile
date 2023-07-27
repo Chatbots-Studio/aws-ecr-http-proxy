@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.21.4.1-buster-fat
+FROM openresty/openresty:1.21.4.2-buster-fat
 
 USER root
 
